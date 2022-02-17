@@ -1,16 +1,143 @@
 <!DOCTYPE html>
 <html lang="zh-CH">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>demo</title>
-</head>
-<body>
-    Hello
-</body>
-<script src="https://unpkg.com/blockly/blockly.min.js"></script>
-<script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 0;
+            width: 100vw;
+            height: 100vh;
+        }
 
+        .main {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #textarea {
+            width: 400px;
+            height: 600px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 999999;
+            background: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main"></div>
+    <textarea id="textarea"></textarea>
+</body>
+<!-- <script src="https://unpkg.com/blockly/blockly.min.js"></script> -->
+<script src="./blockly.min.js"></script>
+<script>
+    var toolbox = {
+        "kind": "categoryToolbox",
+        "contents": [
+            {
+                "kind": "category",
+                "name": "控制",
+                "contents": [
+                    {
+                        "kind": "block",
+                        "type": "controls_if"
+                    },
+                ]
+            },
+            {
+                "kind": "category",
+                "name": "逻辑",
+                "contents": [
+                    {
+                        "kind": "block",
+                        "type": "logic_compare"
+                    },
+                    {
+                        "kind": "block",
+                        "type": "logic_boolean"
+                    },
+                    {
+                        "kind": "block",
+                        "type": "logic_negate"
+                    },
+                    {
+                        "kind": "block",
+                        "type": "logic_boolean"
+                    },
+                    {
+                        "kind": "block",
+                        "type": "math_number"
+                    },
+                ]
+            },
+            {
+                "kind": "category",
+                "name": "变量(根据数据自动生成)",
+                "contents": [
+
+                ]
+            },
+        ]
+    }
+    var workspace = Blockly.inject('.main',
+        {
+            collapse: true, // 允许折叠或展开块。默认: 如果工具箱有类别 true 否则 false
+            comments: false, // 允许块有评论。默认: 如果工具箱有类别 true 否则 false
+            css: true, // 是否注入 css
+            disable: true, // 允许禁用块。默认: 如果工具箱有类别 true 否则 false
+            grid: { // 配置网格
+                spacing: 20, // 网格点之间的距离
+                length: 3, // 定义网格点形状 ++++++
+                colour: '#ccc', // 点颜色
+                snap: true, // 是否自动吸附
+            },
+            horizontalLayout: false, // true 工具箱水平 false 工具箱垂直
+            maxBlocks: "Infinity", // 允许创建的最大块实例数
+            maxInstances: "Infinity", // 每一种类型的块允许创建的最大实例数
+            // media: "https://blockly-demo.appspot.com/static/media/". // 从页面（或框架）到 Blockly 媒体目录的路径。
+            move: { // 配置用户如何在工作区中移动的行为
+                scrollbars: { // 确定工作区是否具有垂直或水平滚动条
+                    horizontal: true, // 水平滚动
+                    vertical: true // 垂直滚动
+                },
+                drag: true, // 确定是否可以用鼠标拖动工作区
+                wheel: false, // 确定是否可以使用鼠标滚轮滚动工作区
+            },
+            oneBasedIndex: true, // 列表和字符串索引从几开始 true 1 false 0
+            readOnly: false, // 如果 true，则阻止用户编辑。抑制工具箱和垃圾桶
+            renderer: "geras", // 确定 blockly 使用的渲染器。
+            rtl: false, // 镜像编辑器
+            sounds: true, // 是否开启声音
+            theme: undefined, // 如果未提供主题，则默认为经典主题
+            toolbox: toolbox, // 用户可用的类别和块的树结构
+            toolboxPosition: "start", // 工具箱位置 start end
+            trashcan: true, // 显示或隐藏垃圾桶
+            maxTrashcanContents: 32, // 垃圾箱浮出控件中将显示的已删除项目的最大数量 0 禁用
+            plugins: {},
+            zoom: { // 缩放设置
+                controls: true, // 显示缩放中心、放大和缩小按钮
+                wheel: true, // 允许鼠标滚轮缩放
+                startScale: 1.0, // 初始缩放系数
+                maxScale: 3, // 最大缩放系数
+                minScale: 0.3, // 最小缩放系数
+                scaleSpeed: 1.2, // 每次缩放的速度
+                pinch: true, // 在触摸设备上启用捏缩放支持
+            },
+        });
+    function myUpdateFunction(event) {
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+        console.log(code)
+        document.getElementById('textarea').value = code;
+    }
+    workspace.addChangeListener(myUpdateFunction);
 </script>
+
 </html>
