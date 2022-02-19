@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es5", // 转化成的目标语言
+        "baseUrl": "./",
+        "noImplicitAny": true
+    },
+    "include": [
+        "src/**/*"
+    ], // 要打包的文件
+    "exclude": [
+        "node_modules",
+        "*.test.ts"
+    ]
+}
